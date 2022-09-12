@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TabataTimer</string>
+    <string name="my_sequences">Мои тренировки</string>
+    <string name="settings">Настройки</string>
+    <string name="add_sequence">Добавить тренировку</string>
+    <string name="name">Название</string>
+    <string name="warm_up">Разминка</string>
+    <string name="rest">Отдых</string>
+    <string name="hello_blank_fragment">пвиттои</string>
+    <string name="dark_theme">Ночной режим</string>
+    <string name="delete_confirmation">Do you want to delete all data?</string>
+    <string name="warm_up_label">Разминка</string>
+    <string name="workout_label">Работа</string>
+</resources>

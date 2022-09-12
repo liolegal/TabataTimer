@@ -1,12 +1,13 @@
 package com.example.tabatatimer.model.room.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.example.tabatatimer.model.entities.NewSequenceData
-import com.example.tabatatimer.model.entities.Sequence
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     tableName="sequences",
     indices=[
@@ -22,27 +23,4 @@ data class SequenceDbEntity (
     @ColumnInfo(name="rest_time") val restTime:Long,
     val rounds:Int,
     val cycles:Int
-    ){
-    fun toSequence():Sequence=Sequence(
-        id=id,
-        name=name,
-        color=color,
-        warmUpTime=warmUpTime,
-        workoutTime=workoutTime,
-        restTime=restTime,
-        rounds=rounds,
-        cycles=cycles
-    )
-    companion object{
-        fun fromSequenceData(newSequenceData: NewSequenceData): SequenceDbEntity = SequenceDbEntity(
-            id=0,
-            name=newSequenceData.name,
-            color=newSequenceData.color,
-            warmUpTime=newSequenceData.warmUpTime,
-            workoutTime=newSequenceData.workoutTime,
-            restTime=newSequenceData.restTime,
-            rounds=newSequenceData.rounds,
-            cycles=newSequenceData.cycles
-        )
-    }
-}
+    ):Parcelable

@@ -1,19 +1,5 @@
 <resources>
     <string name="app_name">TabataTimer</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="my_sequences">My sequences</string>
     <string name="settings">Settings</string>
     <string name="add_sequence">Add sequence</string>
@@ -22,5 +8,24 @@
     <string name="rest">Rest</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="warm_up_label">Warm up</string>
+    <string name="workout_label">Workout</string>
+    <string name="rest_label">Rest</string>
+    <string name="clean_confirmation">Do you want to delete all data?(App will be closed)</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="language_pref">language_pref</string>
+    <string name="font_scale">font_scale</string>
+    <string name="clean_data">clean_data</string>
+    <string name="language_summary">Change language</string>
+    <string name="language_title">Language</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose">Choose</string>
+    <string name="clean_data_lable">Clean data</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="finished_label">Good work!</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

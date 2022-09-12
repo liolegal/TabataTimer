@@ -1,12 +1,32 @@
 <resources>
     <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
+    <string-array name="language_entries">
+        <item>ru</item>
+        <item>en</item>
+    </string-array>
+    <string-array name="languageList">
+        <item>"English"</item>
+        <item>"Русский"</item>
     </string-array>
 
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
+    <string-array name="languageListData">
+        <item>en</item>
+        <item>ru</item>
+    </string-array>
+
+    <string-array name="fontScaleList">
+        <item>"Extra small"</item>
+        <item>"Small"</item>
+        <item>"Medium"</item>
+        <item>"Large"</item>
+        <item>"Extra large"</item>
+    </string-array>
+
+    <string-array name="fontScaleListData">
+        <item>"0.5"</item>
+        <item>"0.75"</item>
+        <item>"1"</item>
+        <item>"1.25"</item>
+        <item>"1.5"</item>
     </string-array>
 </resources>

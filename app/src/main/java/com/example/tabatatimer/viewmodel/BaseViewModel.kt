@@ -10,7 +10,7 @@ import com.example.tabatatimer.model.room.entities.SequenceDbEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SequenceViewModel(application: Application):AndroidViewModel(application) {
+class BaseViewModel(application: Application):AndroidViewModel(application) {
     val readAllData:LiveData<List<SequenceDbEntity>>
     private val repository: RoomSequenceRepository
 
@@ -24,4 +24,15 @@ class SequenceViewModel(application: Application):AndroidViewModel(application) 
             repository.addSequence(sequenceDbEntity)
         }
     }
+    fun updateSequence(sequenceDbEntity: SequenceDbEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateSequence(sequenceDbEntity)
+        }
+    }
+    fun deleteSequence(sequenceDbEntity: SequenceDbEntity){
+        viewModelScope.launch (Dispatchers.IO){
+            repository.deleteSequence(sequenceDbEntity)
+        }
+    }
+
 }

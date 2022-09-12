@@ -1,5 +1,6 @@
 package com.example.tabatatimer.screens.add
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,37 +11,44 @@ import androidx.navigation.fragment.findNavController
 import com.example.tabatatimer.R
 import com.example.tabatatimer.databinding.FragmentAddBinding
 import com.example.tabatatimer.model.room.entities.SequenceDbEntity
-import com.example.tabatatimer.viewmodel.SequenceViewModel
+import com.example.tabatatimer.viewmodel.BaseViewModel
+import top.defaults.colorpicker.ColorPickerPopup
 
-public class AddFragment : Fragment() {
+
+class AddFragment : Fragment() {
     lateinit var binding: FragmentAddBinding
-private lateinit var mSequenceViewModel: SequenceViewModel
+    var backColor = "000"
+    private lateinit var mBaseViewModel: BaseViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAddBinding.inflate(inflater)
-        mSequenceViewModel=ViewModelProvider(this).get(SequenceViewModel::class.java)
+        mBaseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        binding.numberPickerMinutes.minValue=0
-//        binding.numberPickerMinutes.maxValue=30
-//        binding.textView.setOnClickListener{
-//            binding.textView.text=binding.numberPickerMinutes.value.toString()
-//        }
         initNumberPickers()
-        binding.button.setOnClickListener {
-
-           insertToDatabase()
+        binding.saveAddBtn.setOnClickListener {
+            insertToDatabase()
         }
-    }
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = AddFragment()
+        binding.button.setOnClickListener {
+            ColorPickerPopup.Builder(requireContext())
+                .initialColor(Color.WHITE)
+                .enableBrightness(false)
+                .okTitle(getString(R.string.choose))
+                .cancelTitle(getString(R.string.cancel))
+                .showIndicator(true)
+                .showValue(false)
+                .build()
+                .show(view, object : ColorPickerPopup.ColorPickerObserver() {
+                    override fun onColorPicked(color: Int) {
+                        view.setBackgroundColor(color)
+                        backColor = color.toString()
+                    }
+                })
+        }
     }
 
     private fun initNumberPickers() {
@@ -61,22 +69,27 @@ private lateinit var mSequenceViewModel: SequenceViewModel
 
 
     }
-    private fun insertToDatabase(){
-        val warmupTime=convertToMillisec(binding.warmUpMinutes.value,binding.warmUpSeconds.value)
-        val workoutTime=convertToMillisec(binding.workoutMinutes.value,binding.workoutSeconds.value)
-        val restTime=convertToMillisec(binding.restMinutes.value,binding.restSeconds.value)
-        val name=binding.editTextName.text.toString()
-        val color="blue"
-        val rounds=binding.roundsEt.text.toString().toInt()
-        val cycles=binding.cyclesEt.text.toString().toInt()
-        val sequence=SequenceDbEntity(0,name,color,warmupTime,workoutTime,restTime,rounds,cycles)
-        mSequenceViewModel.addSequence(sequence)
+
+    private fun insertToDatabase() {
+        val warmupTime =(binding.warmUpMinutes.value*60+binding.warmUpSeconds.value).toLong()
+            //convertToMillisec(binding.warmUpMinutes.value, binding.warmUpSeconds.value)
+        val workoutTime =(binding.workoutMinutes.value*60+binding.workoutSeconds.value).toLong()
+            //convertToMillisec(binding.workoutMinutes.value, binding.workoutSeconds.value)
+        val restTime =(binding.restMinutes.value*60+binding.restSeconds.value ).toLong()
+            //convertToMillisec(binding.restMinutes.value, binding.restSeconds.value)
+        val name = binding.editTextName.text.toString()
+        val color = backColor
+        val rounds = 1
+        val cycles = binding.cyclesEt.text.toString().toInt()
+        val sequence =
+            SequenceDbEntity(0, name, color, warmupTime, workoutTime, restTime, rounds, cycles)
+        mBaseViewModel.addSequence(sequence)
         findNavController().navigate(R.id.action_addFragment_to_listFragment)
     }
 
 
     fun convertToMillisec(min: Int, sec: Int): Long {
-        var res: Long = 0L
+        var res: Long
         res = (min * 60000 + sec * 1000).toLong()
         return res
 
