@@ -16,9 +16,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="confirmation">Confirmation</string>
-    <string name="language_pref">language_pref</string>
-    <string name="font_scale">font_scale</string>
-    <string name="clean_data">clean_data</string>
+    <string name="language_pref" translatable="false">language_pref</string>
+    <string name="font_scale" translatable="false">font_scale</string>
+    <string name="clean_data" translatable="false">clean_data</string>
     <string name="language_summary">Change language</string>
     <string name="language_title">Language</string>
     <string name="cancel">Cancel</string>
@@ -27,5 +27,7 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="finished_label">Good work!</string>
+    <string name="my_timers">My timers</string>
+    <string name="cycles">Cycles</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

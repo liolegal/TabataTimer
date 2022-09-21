@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tabatatimer.R
 import com.example.tabatatimer.databinding.FragmentListBinding
 import com.example.tabatatimer.viewmodel.BaseViewModel
 
@@ -21,7 +23,7 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentListBinding.inflate(inflater)
         mBaseViewModel = ViewModelProvider(this).get(BaseViewModel::class.java)
-
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.my_timers)
         val adapter = ListAdapter(mBaseViewModel)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())

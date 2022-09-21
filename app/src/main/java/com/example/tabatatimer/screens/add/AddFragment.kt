@@ -1,11 +1,13 @@
 package com.example.tabatatimer.screens.add
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.tabatatimer.R
@@ -29,8 +31,9 @@ class AddFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as AppCompatActivity).supportActionBar?.title = activity?.getString(R.string.add_sequence)
         initNumberPickers()
-        binding.saveAddBtn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
             insertToDatabase()
         }
         binding.button.setOnClickListener {
@@ -44,7 +47,8 @@ class AddFragment : Fragment() {
                 .build()
                 .show(view, object : ColorPickerPopup.ColorPickerObserver() {
                     override fun onColorPicked(color: Int) {
-                        view.setBackgroundColor(color)
+                        binding.root.setBackgroundColor(backColor.toInt())
+                        binding.editTextName.backgroundTintList= ColorStateList.valueOf(backColor.toInt())
                         backColor = color.toString()
                     }
                 })
@@ -56,15 +60,17 @@ class AddFragment : Fragment() {
             warmUpMinutes.minValue = 0
             warmUpMinutes.maxValue = 30
             warmUpSeconds.minValue = 0
-            warmUpSeconds.maxValue = 60
+            warmUpSeconds.maxValue = 59
             workoutMinutes.maxValue = 30
-            workoutSeconds.maxValue = 60
+            workoutSeconds.maxValue = 59
             workoutMinutes.minValue = 0
             workoutSeconds.minValue = 0
             restMinutes.minValue = 0
-            restMinutes.maxValue = 30
+            restMinutes.maxValue = 59
             restSeconds.minValue = 0
-            restSeconds.maxValue = 60
+            restSeconds.maxValue = 59
+            cyclesNumberpicker.minValue=1
+            cyclesNumberpicker.maxValue=10
         }
 
 
@@ -80,20 +86,13 @@ class AddFragment : Fragment() {
         val name = binding.editTextName.text.toString()
         val color = backColor
         val rounds = 1
-        val cycles = binding.cyclesEt.text.toString().toInt()
+        val cycles = binding.cyclesNumberpicker.value
         val sequence =
             SequenceDbEntity(0, name, color, warmupTime, workoutTime, restTime, rounds, cycles)
         mBaseViewModel.addSequence(sequence)
         findNavController().navigate(R.id.action_addFragment_to_listFragment)
     }
 
-
-    fun convertToMillisec(min: Int, sec: Int): Long {
-        var res: Long
-        res = (min * 60000 + sec * 1000).toLong()
-        return res
-
-    }
 
 
 }

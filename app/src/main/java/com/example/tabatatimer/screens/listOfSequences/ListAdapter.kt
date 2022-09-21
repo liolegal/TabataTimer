@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.toColorInt
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabatatimer.R
@@ -26,15 +28,20 @@ class ListAdapter(val mBaseViewModel: BaseViewModel) : RecyclerView.Adapter<List
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = sequenceList[position]
-        //holder.itemView.findViewById<ConstraintLayout>(R.id.recycler_item).setBackgroundColor(currentItem.color.toInt())
+        holder.itemView.findViewById<CardView>(R.id.timer_list_item).setCardBackgroundColor(currentItem.color.toInt())
         holder.itemView.findViewById<TextView>(R.id.title_of_sequence).text = currentItem.name
-        holder.itemView.findViewById<ConstraintLayout>(R.id.timer_list_item).setOnClickListener {
+        holder.itemView.findViewById<TextView>(R.id.warm_up_time).text = currentItem.warmUpTime.toString()
+        holder.itemView.findViewById<TextView>(R.id.workout_time).text = currentItem.workoutTime.toString()
+        holder.itemView.findViewById<TextView>(R.id.rest_time).text = currentItem.restTime.toString()
+        holder.itemView.findViewById<TextView>(R.id.total_time).text =
+            (currentItem.warmUpTime+ currentItem.cycles * (currentItem.workoutTime+currentItem.restTime)).toString()
+        holder.itemView.findViewById<CardView>(R.id.timer_list_item).setOnClickListener {
             val action = ListFragmentDirections.actionListFragmentToTimerFragment(currentItem)
             holder.itemView.findNavController().navigate(action)
         }
         val popupMenu = androidx.appcompat.widget.PopupMenu(
             holder.itemView.context,
-            holder.itemView.findViewById<ConstraintLayout>(R.id.timer_list_item)
+            holder.itemView.findViewById<CardView>(R.id.timer_list_item)
         )
         popupMenu.inflate(R.menu.timer_menu)
         popupMenu.setOnMenuItemClickListener {
@@ -64,7 +71,7 @@ class ListAdapter(val mBaseViewModel: BaseViewModel) : RecyclerView.Adapter<List
                 else -> false
             }
         }
-        holder.itemView.findViewById<ConstraintLayout>(R.id.timer_list_item).setOnLongClickListener {
+        holder.itemView.findViewById<CardView>(R.id.timer_list_item).setOnLongClickListener {
            popupMenu.show()
             true
         }

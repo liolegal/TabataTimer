@@ -9,7 +9,19 @@
     <string name="rest">Отдых</string>
     <string name="hello_blank_fragment">пвиттои</string>
     <string name="dark_theme">Ночной режим</string>
-    <string name="delete_confirmation">Do you want to delete all data?</string>
     <string name="warm_up_label">Разминка</string>
     <string name="workout_label">Работа</string>
+    <string name="rest_label">Отдых</string>
+    <string name="clean_confirmation">Вы действительно хотите удалить данные приложения?(Приложение будет перезапущено)</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="confirmation">Подтверждение</string>
+    <string name="language_summary">Сменить язык</string>
+    <string name="language_title">Язык</string>
+    <string name="cancel">Отмена</string>
+    <string name="choose">Выбрать</string>
+    <string name="clean_data_lable">Очистить данные</string>
+    <string name="update">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="finished_label">Хорошая работа!</string>
 </resources>

@@ -2,10 +2,7 @@ package com.example.tabatatimer.screens.timer
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.IBinder
@@ -19,8 +16,12 @@ import com.example.tabatatimer.R
 import com.example.tabatatimer.databinding.FragmentTimerBinding
 import com.example.tabatatimer.services.TimerService
 import com.example.tabatatimer.viewmodel.TimerViewModel
-import android.content.ContextWrapper
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tabatatimer.Constants.TIMER_ACTION_TYPE
+import com.example.tabatatimer.Constants.TIMER_BROADCAST_ACTION
+import com.example.tabatatimer.Constants.TIMER_STARTED
+import com.example.tabatatimer.Constants.TIMER_STOPPED
 import com.example.tabatatimer.services.TimerPhase
 
 import java.util.*
@@ -32,35 +33,40 @@ class TimerFragment : Fragment() {
     lateinit var binding: FragmentTimerBinding
     private val args by navArgs<TimerFragmentArgs>()
     private var timerServiceConnection: ServiceConnection? = null
+    private var broadcastReceiver: BroadcastReceiver? = null
     private var timerService: TimerService? = null
-    private var currentPhase=0
-    val adapter=PhasesAdapter()
+    private var currentPhase = 0
+    val adapter = PhasesAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = FragmentTimerBinding.inflate(inflater)
+        binding.root.setBackgroundColor(args.currentSequence.color.toInt())
+        (activity as AppCompatActivity).supportActionBar?.title = args.currentSequence.name
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter.setData(getPhases())
         startTimerService()
         binding.startBtn.setOnClickListener {
-            binding.pauseBtn.visibility = View.VISIBLE
-            binding.startBtn.visibility = View.INVISIBLE
             timerService!!.start()
+            binding.startBtn.isEnabled = false
+            binding.pauseBtn.isEnabled = true
         }
         binding.pauseBtn.setOnClickListener {
-            binding.pauseBtn.visibility = View.INVISIBLE
-            binding.startBtn.visibility = View.VISIBLE
             timerService!!.stop()
+            binding.startBtn.isEnabled = true
+            binding.pauseBtn.isEnabled = false
         }
         binding.nextPhase.setOnClickListener {
             timerService?.nextPhase()
             currentPhase++
-            adapter.setSelectPhase(currentPhase)
+            adapter.setSelectPhase(viewModel.currentPos.value!!)
         }
         setObservables()
+        setBroadcastReceiver()
         return binding.root
     }
 
@@ -107,8 +113,8 @@ class TimerFragment : Fragment() {
         service.preparationRemaining.observe(activity as LifecycleOwner) {
             viewModel.preparationRemaining.value = it
         }
-        service.currentPos.observe(activity as LifecycleOwner){
-            viewModel.currentPos.value=it
+        service.currentPos.observe(activity as LifecycleOwner) {
+            viewModel.currentPos.value = it
         }
 
     }
@@ -123,19 +129,16 @@ class TimerFragment : Fragment() {
                 TimerPhase.REST -> binding.timerType.text = activity?.getString(R.string.rest_label)
                 TimerPhase.FINISHED -> {
                     binding.timerType.text = activity?.getString(R.string.finished_label)
-                    binding.pauseBtn.visibility = View.INVISIBLE
-                    binding.startBtn.visibility = View.VISIBLE
+                    binding.startBtn.isEnabled = true
+                    binding.pauseBtn.isEnabled = false
+                    adapter.setSelectPhase(0)
                     binding.textViewCountdown.text = args.currentSequence.warmUpTime.toString()
+                    binding.cyclesTv.text = "1 / ${args.currentSequence.cycles}"
                 }
             }
 
         }
-//        viewModel.currentTimeRemaining.observe(activity as LifecycleOwner){
-//            if (it >= 0) {
-//                binding.textViewCountdown.text = it.toString()
-//            }
-//        }
-        viewModel.currentPos.observe(activity as LifecycleOwner){
+        viewModel.currentPos.observe(activity as LifecycleOwner) {
             adapter.setSelectPhase(it)
         }
         viewModel.preparationRemaining.observe(activity as LifecycleOwner) {
@@ -157,14 +160,43 @@ class TimerFragment : Fragment() {
         }
 
         viewModel.cyclesRemaining.observe(activity as LifecycleOwner) {
-            // binding.textViewCountdown.text = it.toString()
+            this.setCyclesView((args.currentSequence.cycles + 1 - it).toString())
         }
+    }
+    private fun setBroadcastReceiver() {
+        broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                when (intent.getStringExtra(TIMER_ACTION_TYPE)) {
+                    TIMER_STARTED -> {
+                        binding.startBtn.isEnabled = false
+                        binding.pauseBtn.isEnabled = true
+                    }
+                    TIMER_STOPPED -> {
+                        binding.startBtn.isEnabled = true
+                        binding.pauseBtn.isEnabled = false
+                    }
+                }
+            }
+        }
+
+        val filter = IntentFilter(TIMER_BROADCAST_ACTION)
+        activity?.registerReceiver(broadcastReceiver, filter)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        if (broadcastReceiver != null) {
+            activity?.unregisterReceiver(broadcastReceiver)
+        }
 
+        if (timerServiceConnection != null) {
+            activity?.unbindService(timerServiceConnection!!)
+        }
         activity?.stopService(Intent(requireContext(), TimerService::class.java))
+    }
+
+    private fun setCyclesView(currentCycle: String) {
+        binding.cyclesTv.text = "$currentCycle / ${args.currentSequence.cycles}"
     }
 
     private fun getPhases(): List<TimerPhase> {
@@ -177,4 +209,5 @@ class TimerFragment : Fragment() {
     }
 
 }
+
 
