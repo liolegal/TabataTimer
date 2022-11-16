@@ -9,4 +9,6 @@ object Constants {
     const val NOTIFICATION_BROADCAST_ACTION = "com.example.tabatatimer.NOTIFICATION_BROADCAST_ACTION"
     const val TIMER_BROADCAST_ACTION = "com.example.tabatatimer.TIMER_BROADCAST_ACTION"
     const val TIMER_ACTION_TYPE = "com.example.tabatatimer.TIMER_STATE"
+    const val UNIQUE_EXEPTION="com.example.tabatatimer.UNIQUE_EXCEPTION"
+
 }

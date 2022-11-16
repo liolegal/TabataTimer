@@ -11,9 +11,7 @@ import android.content.IntentFilter
 import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
-import android.os.CountDownTimer
 import android.os.IBinder
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
@@ -26,8 +24,6 @@ import com.example.tabatatimer.Constants.TIMER_STARTED
 import com.example.tabatatimer.Constants.TIMER_STOPPED
 import com.example.tabatatimer.R
 import com.example.tabatatimer.model.room.entities.SequenceDbEntity
-import com.example.tabatatimer.screens.MainActivity
-import kotlinx.coroutines.NonCancellable.start
 
 class TimerService : Service() {
     var currentPos = MutableLiveData(0)
@@ -41,6 +37,7 @@ class TimerService : Service() {
 
     private lateinit var notificationManager: NotificationManagerCompat
     private lateinit var timerReceiver: BroadcastReceiver
+    private lateinit var ringSound: MediaPlayer
 
     private var currentTimerHandler: TimerHandler? = null
     private var currentPhaseRemaining = 0
@@ -59,7 +56,7 @@ class TimerService : Service() {
         }
         notificationManager = NotificationManagerCompat.from(this)
         registerReceiver(timerReceiver, IntentFilter(NOTIFICATION_BROADCAST_ACTION))
-        // ringSound = MediaPlayer.create(this, R.raw.ring_sound)
+        ringSound = MediaPlayer.create(this, R.raw.ring_sound)
     }
 
     fun setTimer(timer: SequenceDbEntity) {
@@ -202,7 +199,7 @@ class TimerService : Service() {
 
         override fun onFinish() {
             nextPhase()
-            //ringSound.start()
+            ringSound.start()
         }
     }
 

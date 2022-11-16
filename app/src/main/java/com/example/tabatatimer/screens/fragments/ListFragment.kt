@@ -1,4 +1,4 @@
-package com.example.tabatatimer.screens.listOfSequences
+package com.example.tabatatimer.screens.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tabatatimer.R
 import com.example.tabatatimer.databinding.FragmentListBinding
+import com.example.tabatatimer.screens.adapters.ListAdapter
 import com.example.tabatatimer.viewmodel.BaseViewModel
 
 class ListFragment : Fragment() {

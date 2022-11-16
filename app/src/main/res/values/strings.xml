@@ -29,5 +29,6 @@
     <string name="finished_label">Good work!</string>
     <string name="my_timers">My timers</string>
     <string name="cycles">Cycles</string>
+
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

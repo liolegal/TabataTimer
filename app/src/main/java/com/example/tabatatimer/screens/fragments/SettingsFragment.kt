@@ -1,4 +1,4 @@
-package com.example.tabatatimer.screens.settings
+package com.example.tabatatimer.screens.fragments
 
 import android.app.ActivityManager
 import android.app.AlertDialog
@@ -8,7 +8,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.*
 import com.example.tabatatimer.R
-import com.example.tabatatimer.screens.MainActivity
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
@@ -17,6 +16,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         PreferenceManager.getDefaultSharedPreferences(requireContext())
             .registerOnSharedPreferenceChangeListener(this)
+        val mode: Boolean
+        mode = getString(R.string.mode) == "Night"
+        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
+            .putBoolean(this.getString(R.string.dark_theme), mode).apply()
+
         val button: Preference? = findPreference(getString(R.string.clean_data))
         button?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val dialogBuilder = AlertDialog.Builder(context)
@@ -34,15 +38,15 @@ class SettingsFragment : PreferenceFragmentCompat(),
             true
         }
     }
+
     override fun onSharedPreferenceChanged(prefs: SharedPreferences?, key: String?) {
         when (key) {
             activity?.getString(R.string.dark_theme) -> {
-                when (prefs?.getBoolean(activity?.getString(R.string.dark_theme), false)) {
-                    true -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    false -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                if (prefs?.getBoolean(this.getString(R.string.dark_theme), false)!!) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-                    else -> {}
-                }
+                activity?.recreate()
             }
             activity?.getString(R.string.language_pref) -> {
                 activity?.recreate()

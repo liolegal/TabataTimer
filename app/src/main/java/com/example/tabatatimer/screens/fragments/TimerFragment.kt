@@ -1,16 +1,12 @@
-package com.example.tabatatimer.screens.timer
+package com.example.tabatatimer.screens.fragments
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.*
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.IBinder
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.tabatatimer.R
 import com.example.tabatatimer.databinding.FragmentTimerBinding
@@ -22,16 +18,15 @@ import com.example.tabatatimer.Constants.TIMER_ACTION_TYPE
 import com.example.tabatatimer.Constants.TIMER_BROADCAST_ACTION
 import com.example.tabatatimer.Constants.TIMER_STARTED
 import com.example.tabatatimer.Constants.TIMER_STOPPED
+import com.example.tabatatimer.screens.adapters.PhasesAdapter
 import com.example.tabatatimer.services.TimerPhase
-
-import java.util.*
 
 class TimerFragment : Fragment() {
 
     private val viewModel: TimerViewModel by activityViewModels()
 
     lateinit var binding: FragmentTimerBinding
-    private val args by navArgs<TimerFragmentArgs>()
+    private val args by navArgs<com.example.tabatatimer.screens.fragments.TimerFragmentArgs>()
     private var timerServiceConnection: ServiceConnection? = null
     private var broadcastReceiver: BroadcastReceiver? = null
     private var timerService: TimerService? = null
@@ -54,6 +49,7 @@ class TimerFragment : Fragment() {
             timerService!!.start()
             binding.startBtn.isEnabled = false
             binding.pauseBtn.isEnabled = true
+            binding.nextPhase.isEnabled=true
         }
         binding.pauseBtn.setOnClickListener {
             timerService!!.stop()
@@ -131,6 +127,7 @@ class TimerFragment : Fragment() {
                     binding.timerType.text = activity?.getString(R.string.finished_label)
                     binding.startBtn.isEnabled = true
                     binding.pauseBtn.isEnabled = false
+                    binding.nextPhase.isEnabled=false
                     adapter.setSelectPhase(0)
                     binding.textViewCountdown.text = args.currentSequence.warmUpTime.toString()
                     binding.cyclesTv.text = "1 / ${args.currentSequence.cycles}"
@@ -140,6 +137,7 @@ class TimerFragment : Fragment() {
         }
         viewModel.currentPos.observe(activity as LifecycleOwner) {
             adapter.setSelectPhase(it)
+            binding.recyclerView.scrollToPosition(it)
         }
         viewModel.preparationRemaining.observe(activity as LifecycleOwner) {
             if (it >= 0) {
@@ -163,6 +161,7 @@ class TimerFragment : Fragment() {
             this.setCyclesView((args.currentSequence.cycles + 1 - it).toString())
         }
     }
+
     private fun setBroadcastReceiver() {
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {

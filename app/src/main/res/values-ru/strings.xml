@@ -24,4 +24,6 @@
     <string name="update">Изменить</string>
     <string name="delete">Удалить</string>
     <string name="finished_label">Хорошая работа!</string>
+    <string name="cycles">Циклы</string>
+    <string name="my_timers">Мои тайиеры</string>
 </resources>

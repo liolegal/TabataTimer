@@ -2,19 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreferenceCompat
+        app:defaultValue="false"
         app:key="@string/dark_theme"
         app:title="@string/dark_theme" />
     <Preference
         app:key="@string/clean_data"
-        app:title="@string/clean_data_lable"
-        app:summary="Clean all app data"/>
+        app:summary="Clean all app data"
+        app:title="@string/clean_data_lable" />
     <ListPreference
-        app:key="@string/language_pref"
-        app:title="@string/language_title"
-        app:summary="@string/language_summary"
         android:entries="@array/language_entries"
         android:entryValues="@array/language_entries"
-        />
+        app:key="@string/language_pref"
+        app:summary="@string/language_summary"
+        app:title="@string/language_title" />
 
 
 </PreferenceScreen>

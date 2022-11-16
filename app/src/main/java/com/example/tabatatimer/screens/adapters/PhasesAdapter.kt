@@ -1,17 +1,14 @@
-package com.example.tabatatimer.screens.timer
+package com.example.tabatatimer.screens.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tabatatimer.R
 import com.example.tabatatimer.services.TimerPhase
-import com.example.tabatatimer.viewmodel.BaseViewModel
 
 class PhasesAdapter() : RecyclerView.Adapter<PhasesAdapter.MyViewHolder>() {
     private var phaseList = emptyList<TimerPhase>()
@@ -28,11 +25,9 @@ class PhasesAdapter() : RecyclerView.Adapter<PhasesAdapter.MyViewHolder>() {
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = phaseList[position]
-        if (selectPhase == position) {//#30676767holder.itemView.context.getColor(R.color.selectionColor)
-            holder.itemView.findViewById<CardView>(R.id.phase_list_item).setCardBackgroundColor(("#FF018786".toColorInt()))
-               // .setBackgroundColor(("#FF018786".toColorInt()))
+        if (selectPhase == position) {
+            holder.itemView.findViewById<CardView>(R.id.phase_list_item).setCardBackgroundColor(("#FF03DAC5".toColorInt()))
         } else holder.itemView.findViewById<CardView>(R.id.phase_list_item).setCardBackgroundColor(("#FFFFFFFF".toColorInt()))
-            //.setBackgroundColor(("#FFFFFFFF".toColorInt()))
         when (currentItem) {
             TimerPhase.PREPARATION -> holder.itemView.findViewById<TextView>(R.id.title_of_phase).text =
                 holder.itemView.context.getString(R.string.warm_up_label)

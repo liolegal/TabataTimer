@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.tabatatimer.screens.listOfSequences.ListFragment"
+        android:name="com.example.tabatatimer.screens.fragments.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.tabatatimer.screens.settings.SettingsFragment"
+        android:name="com.example.tabatatimer.screens.fragments.SettingsFragment"
         android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settingsFragment_to_listFragment"
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.example.tabatatimer.screens.add.AddFragment"
+        android:name="com.example.tabatatimer.screens.fragments.AddFragment"
         android:label="fragment_add"
         tools:layout="@layout/fragment_add" >
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/updateFragment"
-        android:name="com.example.tabatatimer.screens.update.UpdateFragment"
+        android:name="com.example.tabatatimer.screens.fragments.UpdateFragment"
         android:label="fragment_update"
         tools:layout="@layout/fragment_update" >
         <argument
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/timerFragment"
-        android:name="com.example.tabatatimer.screens.timer.TimerFragment"
+        android:name="com.example.tabatatimer.screens.fragments.TimerFragment"
         android:label="fragment_timer"
         tools:layout="@layout/fragment_timer" >
         <action
